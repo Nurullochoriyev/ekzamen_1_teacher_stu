@@ -115,3 +115,122 @@ class Teacher_api(APIView):
                 data={'success':False,"habar":str(hato)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+    def put(self, request, pk):
+        teacher = get_object_or_404(Teacher, pk=pk)
+        serializer = Teacher_Serializers(teacher, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk):
+        teacher = get_object_or_404(Teacher, pk=pk)
+        serializer = Teacher_Serializers(teacher, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #
+    # @swagger_auto_schema(
+    #     operation_description="O'qituvchi ma'lumotlarini to'liq yangilash (PUT)",
+    #     request_body=TeacherSerializerPut,  # Yangi serializer yaratishingiz kerak
+    #     responses={
+    #         200: Teacher_Serializers(),
+    #         400: "Validation error",
+    #         404: "Not found"
+    #     }
+    # )
+    # def put(self, request, pk):
+    #     data = {'success': True}
+    #     try:
+    #         print('tttttttttttttttttttttttttttttttttttttttttttttttttttttttt')
+    #         # O'qituvchini topamiz
+    #         teacher = get_object_or_404(Teacher, pk=pk)
+    #         print(teacher,"saloooooooooooooooooooooooooooooooooooooooooooooom")
+    #         # Ma'lumotlarni validatsiya qilamiz
+    #         serializer = Teacher_Serializers(teacher, data=request.data)
+    #         print(serializer,'ttttttttttttttgggggggggggg========================')
+    #         if not serializer.is_valid():
+    #             print('))))))))))))))))))))))))))))))))))))))))))))))))______________________')
+    #             return Response(
+    #                 {'success': False, 'errors': serializer.errors},
+    #                 status=status.HTTP_400_BAD_REQUEST
+    #             )
+    #
+    #         # Yangilashni transaction ichida bajaramiz
+    #         with transaction.atomic():
+    #             serializer.save()
+    #
+    #             # Agar user ma'lumotlari ham yangilansa
+    #             if 'user' in request.data:
+    #                 user = teacher.user
+    #                 user_serializer = UserSerializer(user, data=request.data['user'], partial=True)
+    #                 if not user_serializer.is_valid():
+    #                     return Response(
+    #                         data={'success': False, 'errors': user_serializer.errors},
+    #                         status=status.HTTP_400_BAD_REQUEST
+    #                     )
+    #                 user_serializer.save()
+    #
+    #         data['data'] = serializer.data
+    #         data['message'] = "O'qituvchi ma'lumotlari muvaffaqiyatli yangilandi"
+    #         return Response(data=data, status=status.HTTP_200_OK)
+    #
+    #     except Exception as error:
+    #         print('================================================')
+    #         return Response(
+    #             {'success': False, 'message': str(error)},
+    #             status=status.HTTP_500_INTERNAL_SERVER_ERROR
+    #         )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # def put(self, request, pk):
+    #     try:
+    #         teacher = Teacher.objects.get(pk=pk)
+    #     except Teacher.DoesNotExist:
+    #         return Response(
+    #             {"success": False, "error": "O'qituvchi topilmadi"},
+    #             status=status.HTTP_404_NOT_FOUND
+    #         )
+    #
+    #     serializer = Teacher_Serializers(teacher, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(
+    #             {"success": True, "data": serializer.data},
+    #             status=status.HTTP_200_OK
+    #         )
+    #     return Response(
+    #         {"success": False, "errors": serializer.errors},
+    #         status=status.HTTP_400_BAD_REQUEST
+    #     )

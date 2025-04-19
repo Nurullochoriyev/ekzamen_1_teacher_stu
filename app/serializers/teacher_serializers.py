@@ -29,3 +29,25 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
         'id', 'phone_number', 'password','email', 'is_active', 'is_staff', "is_teacher", 'is_admin', 'is_student')
+
+
+class TeacherSerializerPut(serializers.ModelSerializer):
+    user = UserSerializer(required=False)  # User ma'lumotlari ixtiyoriy
+
+    class Meta:
+        model = Teacher
+        fields = '__all__'
+        extra_kwargs = {
+            'departments': {'required': True},
+            'course': {'required': True},
+            'descriptions': {'required': False}
+        }
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'phone_number', 'is_active']
+        extra_kwargs = {
+            'password': {'write_only': True, 'required': False}
+        }
